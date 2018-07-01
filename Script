@@ -1,0 +1,419 @@
+
+
+create database
+planillas;
+
+
+
+use planillas;
+
+
+
+create
+table actividades_economicas(id_act_economica int(2)  , descripcion varchar(40) not null, primary
+key(id_act_economica))engine=innodb;
+
+
+
+create
+table empresas(id int, nombre varchar(40) not null, direccion varchar(50) not
+null, telefono varchar(15) not null, nit varchar(21) not null, nrc varchar(10)
+not null, id_act_economica int(2)  ,
+rep_legal varchar(40)  , primary key(id),
+index(id_act_economica), foreign key(id_act_economica) references
+actividades_economicas (id_act_economica))engine=innodb;
+
+
+
+create
+table sucursales_por_empresa(id int, id_sucursal int(2)  , nombre varchar(40) not null, direccion
+varchar(50) not null, primary key(id, id_sucursal), index (id), foreign key
+(id)references empresas (id))engine=innodb;
+
+
+
+create
+table afps(tipo_afp int(2)  , descripcion_afp
+varchar(30) not null, primary key(tipo_afp))engine=innodb;
+
+
+
+create table
+cargos(id_cargo int(11), cargo varchar(50) not null, primary
+key(id_cargo))engine=innodb;
+
+
+
+create
+table trabajadores_por_empresa(id int, id_sucursal int(2), id_trabajador
+int(11), nombres  varchar(50) not null,
+apellido_uno varchar(25) not null, apellido_dos varchar(25) not null,
+fecha_nacimiento date not null, nit varchar(21) not null, dui varchar(10) not
+null, num_isss varchar(15) not null, num_afp varchar(15) not null, tipo_afp
+int(2), telefono varchar(12), sueldo decimal(7,2), id_cargo int(11),
+fechaIngreso date not null, fechaSalida date not null, primary key(id,
+id_sucursal, id_trabajador), index(id),
+foreign key(id) references empresas(id), index (id_sucursal), index(tipo_afp), foreign
+key(tipo_afp) references afps(tipo_afp), index(id_cargo), foreign key(id_cargo) references cargos(id_cargo))engine=innodb;
+
+
+
+create table
+recibos_por_empresa(id int, id_sucursal int, id_recibo int, valor decimal(7, 2),
+fecha date not null, conceptoRecibo varchar(50),nombreTrabajadorPagado varchar(40),
+primary key(id, id_sucursal,id_recibo), index(id), foreign key (id) references
+empresas (id), index(id_sucursal))engine=innodb;
+
+
+
+create table
+anticipos_por_trabajador(id
+int, id_sucursal int(2), id_trabajador int(11), id_anticipo int, nombre
+varchar(40),fechaAnticipo date not null, valorAnticipo decimal(7,2), primary
+key(id, id_sucursal, id_trabajador, id_anticipo), index(id),
+foreign key(id) references empresas(id), index (id_sucursal), index(id_trabajador))engine=innodb;
+
+
+
+create table planillas
+(id_planilla int(5), id int, id_sucursal int(2), id_trabajador int(11), nombre
+varchar(40), deFecha date not null, aFecha date not null, sueldo decimal(7,2),
+horas_extras decimal(7,2), vacaciones decimal(7,2), indemnización decimal(7,2),
+aguinaldo decimal(7,2), otros_ingresos decimal(7,2), isss decimal(7,2), afp
+decimal(7,2), isr decimal(7,2), anticipo decimal(7,2), otros_descuentos
+decimal(7,2), liquido_a_pagar decimal(7,2), primary key(id,
+id_sucursal,id_planilla, id_trabajador), index(id), foreign key(id) references
+empresas(id), index
+(id_sucursal), index (id_trabajador))engine=innodb;
+
+
+
+insert into actividades_economicas (id_act_economica, descripcion) values (1, 'Venta de Joyas');
+
+
+
+insert into actividades_economicas (id_act_economica, descripcion) values (2, 'Venta de Autos');
+
+
+
+insert into actividades_economicas (id_act_economica, descripcion) values (3, 'Venta de Juegos');
+
+
+
+insert into empresas (id, nombre, direccion, telefono, nit, nrc,
+id_act_economica, rep_legal) values (1, 'Joyeria Pedro', 'Calle
+#1 Av #1, ciudad', '4567-4356', '0210-150361-321-5', '3334445555',1, 'Juan
+Perez');
+
+
+
+insert into empresas (id, nombre, direccion, telefono, nit, nrc, id_act_economica,
+rep_legal) values (2, 'Concesionaria Audi', 'Calle #2 Av
+#2, ciudad', '4443-3311', '0210-032652-321-4', '1112223334',2, 'Jose Aguirre');
+
+
+
+insert into empresas (id, nombre, direccion, telefono, nit, nrc,
+id_act_economica, rep_legal) values (3, 'Gaming Shop', 'Calle
+#3 Av #3, ciudad', '2447-3222', '1515-121512-121-1', '3213213213',3, 'Ivan F.');
+
+
+
+insert into sucursales_por_empresa (id, id_sucursal, nombre, direccion) values (1,1, 'Casa Matriz', 'Calle #4 Av #4, ciudad');
+
+
+
+insert into sucursales_por_empresa (id, id_sucursal, nombre, direccion) values (1,2, 'Joyeria Gran Via', 'Calle #5 Av #5, ciudad');
+
+
+
+insert into sucursales_por_empresa (id, id_sucursal, nombre, direccion) values (2,1, 'Casa Matriz', 'Calle #6 Av #6, ciudad');
+
+
+
+insert into sucursales_por_empresa (id, id_sucursal, nombre, direccion) values (2,2, 'Deportivos Audi', 'Calle #7 Av #7, ciudad');
+
+
+
+insert into sucursales_por_empresa (id, id_sucursal, nombre, direccion) values (3,1, 'Casa Matriz', 'Calle #8 Av #8, ciudad');
+
+
+
+insert into sucursales_por_empresa (id, id_sucursal, nombre, direccion) values (3,2, 'Videojuegos El Centro', 'Calle #9 Av #9, ciudad');
+
+
+
+insert into afps(tipo_afp, descripcion_afp)
+values (1,'AFP CONFIA');
+
+
+
+insert into afps(tipo_afp, descripcion_afp)
+values (2, 'AFP CRECER');
+
+
+
+insert into cargos(id_cargo, cargo) values (1,
+'Supervisor de Manufactura');
+
+
+
+insert into cargos(id_cargo, cargo) values (2,
+'Desarrollador de Software');
+
+
+
+insert into cargos(id_cargo, cargo) values (3,
+'Control de Calidad');
+
+
+
+insert into cargos(id_cargo, cargo) values (4,
+'Relaciones InterEmpresariales');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (1,1,1, 'Juan Antonio', 'Guti', 'Peralt', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 1, '3456-6553', 200.00,1,
+'2008-01-15');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (1,1,2, 'Juan Ant', 'Errez', 'Ag', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 1, '3456-6553', 300.00,1,
+'2009-02-16');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (1,1,3, 'Juan Q', 'Gus', 'Stev', '1990-09-23', '0000-000000-000-0',
+'00000000-0', '000000000', '00000000', 2, '3456-6553', 400.00,1, '20010-03-17');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (1,1,4, 'Juan C', 'Her', 'Camp', '1990-09-23', '0000-000000-000-0',
+'00000000-0', '000000000', '00000000', 1, '3456-6553', 500.00,2, '2011-04-18');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (1,2,1, 'Juan W', 'Duart', 'Peralta', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 1, '3456-6553',
+500.00,1, '2013-05-19');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (1,2,2, 'Juan S', 'Gutierrez', 'Perez', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 1, '3456-6553', 600.00,3,
+'2015-06-20');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (1,2,3, 'Juan D', 'Gome', 'CienF', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 2, '3456-6553', 700.00,2,
+'2016-07-14');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (1,2,4, 'Juan M', 'Wild', 'Conn', '1990-09-23', '0000-000000-000-0',
+'00000000-0', '000000000', '00000000', 1, '3456-6553', 300.00,4, '2008-08-13');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (2,1,1, 'Juan O', 'Ram', 'Conrr', '1990-09-23', '0000-000000-000-0',
+'00000000-0', '000000000', '00000000', 2, '3456-6553', 200.00,2, '2010-09-12');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (2,1,2, 'Juan Antonio', 'Garc', 'Fland', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 1, '3456-6553', 400.00,4,
+'2003-10-11');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (2,2,1, 'Juan I', 'Quint', 'Godoy', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 1, '3456-6553',
+500.00,1, '2011-11-10');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (2,2,2, 'Juan Diego', 'Linar', 'Aguia', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 2, '3456-6553', 600.00,3,
+'2017-12-09');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (3,1,1, 'Juan Y', 'Cent', 'Arev', '1990-09-23', '0000-000000-000-0',
+'00000000-0', '000000000', '00000000', 1, '3456-6553', 700.00,4, '2015-11-08');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (3,1,2, 'Juan N', 'Riv', 'Urrut', '1990-09-23', '0000-000000-000-0',
+'00000000-0', '000000000', '00000000', 2, '3456-6553', 800.00,1, '2008-10-15');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (3,2,1, 'Juan N', 'Nolasco', 'Hernan', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 1, '3456-6553', 900.00,3,
+'2014-09-07');
+
+
+
+insert into trabajadores_por_empresa (id,
+id_sucursal, id_trabajador, nombres, apellido_uno, apellido_dos,
+fecha_nacimiento, nit, dui, num_isss, num_afp, tipo_afp, telefono, sueldo,
+id_cargo, fechaIngreso) values (3,2,2, 'Juan H', 'Gonza', 'Maye', '1990-09-23',
+'0000-000000-000-0', '00000000-0', '000000000', '00000000', 1, '3456-6553', 1500.00,2,
+'2015-08-06');
+
+
+
+insert into recibos_por_empresa(id,
+id_sucursal, id_recibo, valor, fecha, conceptoRecibo, nombreTrabajadorPagado)
+values(1,1,1,200.00, '2018-06-18', 'Mantenimiento Aire Acondicionado', 'Jorge');
+
+
+
+insert into recibos_por_empresa(id,
+id_sucursal, id_recibo, valor, fecha, conceptoRecibo, nombreTrabajadorPagado)
+values(1,1,2,20.00, '2018-06-15', 'Mantenimiento Fotocopiadora', 'Pedro');
+
+
+
+insert into recibos_por_empresa(id,
+id_sucursal, id_recibo, valor, fecha, conceptoRecibo, nombreTrabajadorPagado)
+values(1,2,1,50.00, '2018-06-08', 'Limpieza General', 'Ricardo');
+
+
+
+insert into recibos_por_empresa(id,
+id_sucursal, id_recibo, valor, fecha, conceptoRecibo, nombreTrabajadorPagado)
+values(1,2,2,500.00, '2018-06-02', 'Reparación Computadoras ', 'Iván');
+
+
+
+insert into recibos_por_empresa(id,
+id_sucursal, id_recibo, valor, fecha, conceptoRecibo, nombreTrabajadorPagado)
+values(2,1,1,100.00, '2018-05-22', 'Revisión Cableado', 'Luis');
+
+
+
+insert into recibos_por_empresa(id,
+id_sucursal, id_recibo, valor, fecha, conceptoRecibo, nombreTrabajadorPagado)
+values(2,2,1,170.00, '2018-06-22', 'Desarrollo de Programa', 'Daniela');
+
+
+
+insert into recibos_por_empresa(id,
+id_sucursal, id_recibo, valor, fecha, conceptoRecibo, nombreTrabajadorPagado)
+values(3,1,1,450.00, '2018-06-14', 'Instalación Aire', 'Aron');
+
+
+
+insert into recibos_por_empresa(id,
+id_sucursal, id_recibo, valor, fecha, conceptoRecibo, nombreTrabajadorPagado)
+values(3,2,1,350.00, '2018-06-14', 'Asesoría de Ventas', 'Andrea');
+
+
+
+insert into anticipos_por_trabajador(id,
+id_sucursal, id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(1,1,1,1, 'Juan A', '2017-09-30', 40.00);
+
+
+
+insert into anticipos_por_trabajador(id, id_sucursal,
+id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(1,1,1,2, 'Juan A', '2017-11-21', 45.00);
+
+
+
+insert into anticipos_por_trabajador(id,
+id_sucursal, id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(1,2,1,1, 'Rob', '2017-11-05', 70.00);
+
+
+
+insert into anticipos_por_trabajador(id,
+id_sucursal, id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(2,1,1,1, 'Jac', '2017-10-12', 50.00);
+
+
+
+insert into anticipos_por_trabajador(id,
+id_sucursal, id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(2,2,1,1, 'Alex', '2014-05-10', 100.00);
+
+
+
+insert into anticipos_por_trabajador(id,
+id_sucursal, id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(3,1,1,1, 'Gab', '2016-07-20', 30.00);
+
+
+
+insert into anticipos_por_trabajador(id,
+id_sucursal, id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(3,2,1,1, 'Dan', '2018-01-16', 120.00);
+
+
+
+insert into anticipos_por_trabajador(id,
+id_sucursal, id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(3,2,1,2, 'Dan', '2018-06-27', 20.00);
+
+
+
+insert into anticipos_por_trabajador(id,
+id_sucursal, id_trabajador, id_anticipo, nombre, fechaAnticipo, valorAnticipo)
+values(3,2,1,3, 'Dan', '2018-05-27', 80.00);
+
+
+
+ 
+
+
+
