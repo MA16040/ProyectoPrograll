@@ -7,8 +7,7 @@ package lag_planillas;
 
 /**
  *
- * @author Gabriel Salinas
- * 
+ * @author Kevin Lucero
  */
 public class LAG_Planillas {
 

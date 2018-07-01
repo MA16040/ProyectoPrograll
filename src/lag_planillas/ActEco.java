@@ -1,7 +1,6 @@
 package lag_planillas;
 
 import java.sql.ResultSet;
-import lag_planillas.conexion;
 
 public class ActEco {
 

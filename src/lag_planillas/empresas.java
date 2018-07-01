@@ -2,7 +2,6 @@ package lag_planillas;
 
 import java.sql.Date;
 import java.sql.ResultSet;
-import lag_planillas.conexion;
 
 public class empresas {
 

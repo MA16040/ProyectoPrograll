@@ -4,7 +4,6 @@ import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import lag_planillas.afps;
 
 public class addAFP extends javax.swing.JFrame {
 
